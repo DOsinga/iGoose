@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-Powered Widget Dashboard</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="dashboard" id="widget-container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Widget Dashboard</h1>
+                <div class="dashboard-actions">
+                    <button id="add-widget-btn" class="add-widget-button">+</button>
+                </div>
+            </div>
+            <!-- Widget menu (initially hidden) -->
+            <div id="widget-menu" class="widget-menu">
+                <div class="widget-menu-header">
+                    <h3>Add Widget</h3>
+                    <button id="close-widget-menu" class="close-button">✕</button>
+                </div>
+                <div id="widget-types-list" class="widget-types-list">
+                    <!-- Widget types will be added here dynamically -->
+                </div>
+            </div>
+            <!-- Widgets will be dynamically added here -->
+        </div>
+        <div class="chat-panel" id="chat-container">
+            <!-- Chat interface will be added here -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { WidgetManager } from '/js/widget-manager.js';
+        import { ChatInterface } from '/chat/chat.js';
+        
+        // Initialize the widget manager
+        const widgetContainer = document.getElementById('widget-container');
+        const widgetManager = new WidgetManager(widgetContainer);
+        
+        // Initialize the chat interface
+        const chatContainer = document.getElementById('chat-container');
+        const chatInterface = new ChatInterface(chatContainer, widgetManager);
+        
+        // Widget menu elements
+        const addWidgetBtn = document.getElementById('add-widget-btn');
+        const widgetMenu = document.getElementById('widget-menu');
+        const closeWidgetMenu = document.getElementById('close-widget-menu');
+        const widgetTypesList = document.getElementById('widget-types-list');
+        
+        // Toggle widget menu
+        addWidgetBtn.addEventListener('click', () => {
+            // Show the widget menu
+            widgetMenu.classList.toggle('visible');
+            
+            // If opening the menu, populate it with widget types
+            if (widgetMenu.classList.contains('visible')) {
+                populateWidgetMenu();
+            }
+        });
+        
+        // Close widget menu
+        closeWidgetMenu.addEventListener('click', () => {
+            widgetMenu.classList.remove('visible');
+        });
+        
+        // Populate widget menu with available widget types
+        async function populateWidgetMenu() {
+            // Clear previous items
+            widgetTypesList.innerHTML = '';
+            
+            // Get available widget types
+            const widgetTypes = widgetManager.getAvailableWidgetTypes();
+            
+            if (widgetTypes.length === 0) {
+                widgetTypesList.innerHTML = '<div class="empty-message">No widget types available</div>';
+                return;
+            }
+            
+            // Create an item for each widget type
+            for (const widgetType of widgetTypes) {
+                try {
+                    // Fetch widget type details
+                    const response = await fetch(`/api/widget-types/${widgetType}`);
+                    if (!response.ok) continue;
+                    
+                    const typeData = await response.json();
+                    
+                    const typeItem = document.createElement('div');
+                    typeItem.className = 'widget-type-item';
+                    typeItem.innerHTML = `
+                        <div class="widget-type-icon">${typeData.name[0]}</div>
+                        <div class="widget-type-info">
+                            <div class="widget-type-name">${typeData.name}</div>
+                            <div class="widget-type-description">${typeData.description || ''}</div>
+                        </div>
+                    `;
+                    
+                    // Add click handler to add this type of widget
+                    typeItem.addEventListener('click', async () => {
+                        // Close the menu
+                        widgetMenu.classList.remove('visible');
+                        
+                        // Add widget instance
+                        const result = await widgetManager.addWidgetInstance(widgetType);
+                        
+                        if (!result.success) {
+                            console.error('Failed to add widget:', result.error);
+                        }
+                    });
+                    
+                    widgetTypesList.appendChild(typeItem);
+                } catch (error) {
+                    console.error(`Error loading widget type ${widgetType}:`, error);
+                }
+            }
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (widgetMenu.classList.contains('visible') && 
+                !widgetMenu.contains(e.target) && 
+                !addWidgetBtn.contains(e.target)) {
+                widgetMenu.classList.remove('visible');
+            }
+        });
+        
+        // Load all existing widgets
+        document.addEventListener('DOMContentLoaded', async () => {
+            await widgetManager.loadAllWidgets();
+        });
+    </script>
+</body>
+</html>

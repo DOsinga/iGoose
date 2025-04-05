@@ -1,0 +1,7 @@
+{
+  "id": "swiss",
+  "name": "Clock Widget",
+  "description": "Displays current time and date",
+  "version": "1.0.0",
+  "icon": "🕒"
+}

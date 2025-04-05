@@ -1,0 +1,9 @@
+{
+  "widgets": [
+    {
+      "id": "clock",
+      "name": "Clock Widget",
+      "description": "Displays current time and date"
+    }
+  ]
+}

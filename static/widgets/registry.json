@@ -1,0 +1,65 @@
+{
+  "widgetTypes": [
+    {
+      "id": "clock",
+      "name": "Clock Widget",
+      "description": "Displays current time and date"
+    },
+    {
+      "id": "swiss",
+      "name": "Swiss Clock Widget",
+      "description": "Displays current time and date in Swiss format"
+    },
+    {
+      "id": "xkcd",
+      "name": "XKCD",
+      "description": "XKCD comic strip viewer"
+    }
+  ],
+  "widgets": [
+    {
+      "id": "swiss_1743822166435_378",
+      "type": "swiss",
+      "name": "Clock Widget",
+      "position": {
+        "x": 151.09255825924976,
+        "y": 193.3463341048307,
+        "width": 300,
+        "height": 200
+      }
+    },
+    {
+      "id": "swiss_1743822207274_248",
+      "type": "swiss",
+      "name": "Swiss Clock Widget",
+      "position": {
+        "x": 155.26742092102882,
+        "y": 150.8316897305466,
+        "width": 300,
+        "height": 200
+      }
+    },
+    {
+      "id": "swiss_1743822212331_822",
+      "type": "swiss",
+      "name": "Swiss Clock Widget",
+      "position": {
+        "x": 196.89279386453262,
+        "y": 163.38384785754482,
+        "width": 300,
+        "height": 200
+      }
+    },
+    {
+      "id": "swiss_1743822302474_861",
+      "type": "swiss",
+      "name": "Swiss Clock Widget",
+      "position": {
+        "x": 164.94495045355634,
+        "y": 170.79095612532242,
+        "width": 300,
+        "height": 200
+      }
+    }
+  ]
+}

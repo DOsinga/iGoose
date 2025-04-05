@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-Powered Widget Dashboard</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="dashboard" id="widget-container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Widget Dashboard</h1>
+            </div>
+            <!-- Widgets will be dynamically added here -->
+        </div>
+        <div class="chat-panel" id="chat-container">
+            <!-- Chat interface will be added here -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { WidgetManager } from '/js/widget-manager.js';
+        import { ChatInterface } from '/chat/chat.js';
+        
+        // Initialize the widget manager
+        const widgetContainer = document.getElementById('widget-container');
+        const widgetManager = new WidgetManager(widgetContainer);
+        
+        // Initialize the chat interface
+        const chatContainer = document.getElementById('chat-container');
+        const chatInterface = new ChatInterface(chatContainer, widgetManager);
+        
+        // Load all existing widgets
+        document.addEventListener('DOMContentLoaded', async () => {
+            await widgetManager.loadAllWidgets();
+        });
+    </script>
+</body>
+</html>

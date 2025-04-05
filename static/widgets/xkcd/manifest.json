@@ -1,0 +1,7 @@
+{
+  "id": "xkcd",
+  "name": "XKCD Widget",
+  "description": "Shows a random XKCD comic strip",
+  "version": "1.0.0",
+  "icon": "🕒"
+}
